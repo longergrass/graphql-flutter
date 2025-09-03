@@ -40,6 +40,7 @@ QueryResult<TParsed> mapFetchResultToQueryResult<TParsed>(
   return QueryResult(
     options: options,
     data: data,
+    variables: options.variables,
     context: response.context,
     source: source,
     exception: coalesceErrors(

@@ -114,6 +114,7 @@ class QueryManager {
       if (cacheResult != null) {
         yield QueryResult(
           options: options,
+          variables: options.variables,
           source: QueryResultSource.cache,
           data: cacheResult,
         );
@@ -143,6 +144,7 @@ class QueryManager {
               // we set the source to indicate where the source of failure
               queryResult ??= QueryResult(
                 options: options,
+                variables: options.variables,
                 source: QueryResultSource.network,
               );
 
@@ -300,6 +302,7 @@ class QueryManager {
       // we set the source to indicate where the source of failure
       queryResult ??= QueryResult(
         options: options,
+        variables: options.variables,
         source: QueryResultSource.network,
       );
 
@@ -365,6 +368,7 @@ class QueryManager {
             queryResult = QueryResult(
               options: options,
               data: data,
+              variables: options.variables,
               source: QueryResultSource.cache,
             );
           }
@@ -374,6 +378,7 @@ class QueryManager {
             queryResult.isLoading) {
           queryResult = QueryResult(
             options: options,
+            variables: options.variables,
             source: QueryResultSource.cache,
             exception: OperationException(
               linkException: CacheMissException(
@@ -483,6 +488,7 @@ class QueryManager {
   }) {
     QueryResult<TParsed> queryResult = QueryResult(
       options: options,
+      variables: options.variables,
       source: QueryResultSource.optimisticResult,
     );
 
@@ -568,6 +574,7 @@ class QueryManager {
           final queryResult = QueryResult(
             data: cachedData,
             options: query.options,
+            variables: query.options.variables,
             source: QueryResultSource.cache,
           );
           diffQueryResultCache[request] = queryResult;
@@ -627,6 +634,7 @@ QueryResult<TParsed> _wrapFailure<TParsed>(
 ) =>
     QueryResult(
       options: options,
+      variables: options.variables,
       // we set the source to indicate where the source of failure
       source: QueryResultSource.network,
       exception: coalesceErrors(linkException: translateFailure(ex, trace)),

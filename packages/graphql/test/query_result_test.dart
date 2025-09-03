@@ -72,5 +72,21 @@ void main() {
       expect(result.parsedData, equals(bar));
       expect(runTimes, equals(2));
     });
+    test('variables should be properly passed through', () {
+      final variables = {"id": "123", "name": "test"};
+      final result = QueryResult<String?>(
+        options: QueryOptions(
+          document: parseString('query { bar }'),
+          variables: variables,
+          parserFn: (data) {
+            return data['bar'] as String?;
+          },
+        ),
+        source: QueryResultSource.network,
+        data: {"bar": "test"},
+        variables: variables,
+      );
+      expect(result.variables, equals(variables));
+    });
   });
 }

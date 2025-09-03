@@ -121,6 +121,7 @@ abstract class BaseOptions<TParsed extends Object?> {
 
   QueryResult<TParsed> createResult({
     Map<String, dynamic>? data,
+    Map<String, dynamic>? variables,
     OperationException? exception,
     Context context = const Context(),
     required QueryResultSource source,
@@ -131,5 +132,6 @@ abstract class BaseOptions<TParsed extends Object?> {
         exception: exception,
         context: context,
         source: source,
+        variables: variables,
       );
 }

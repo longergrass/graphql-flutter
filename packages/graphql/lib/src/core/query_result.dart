@@ -44,6 +44,7 @@ class QueryResult<TParsed extends Object?> {
   @protected
   QueryResult.internal({
     Map<String, dynamic>? data,
+    Map<String, dynamic>? variables,
     this.exception,
     this.context = const Context(),
     required this.parserFn,
@@ -52,11 +53,13 @@ class QueryResult<TParsed extends Object?> {
   })  : timestamp = DateTime.now(),
         _cachedParsedData = cachedParsedData {
     _data = data;
+    _variables = variables;
   }
 
   factory QueryResult({
     required BaseOptions<TParsed> options,
     Map<String, dynamic>? data,
+    Map<String, dynamic>? variables,
     OperationException? exception,
     Context context = const Context(),
     required QueryResultSource source,
@@ -66,6 +69,7 @@ class QueryResult<TParsed extends Object?> {
         data: data,
         exception: exception,
         context: context,
+        variables: variables,
       );
 
   /// Unexecuted singleton, used as a placeholder for mutations,
@@ -82,6 +86,7 @@ class QueryResult<TParsed extends Object?> {
   }) =>
       options.createResult(
         data: data,
+        variables: options.variables,
         source: QueryResultSource.loading,
       );
 
@@ -91,6 +96,7 @@ class QueryResult<TParsed extends Object?> {
   }) =>
       options.createResult(
         data: data,
+        variables: options.variables,
         source: QueryResultSource.optimisticResult,
       );
 
@@ -107,12 +113,21 @@ class QueryResult<TParsed extends Object?> {
     return _data;
   }
 
+  Map<String, dynamic>? get variables {
+    return _variables;
+  }
+
+  set variables(Map<String, dynamic>? variables) {
+    _variables = variables;
+  }
+
   set data(Map<String, dynamic>? data) {
     _data = data;
     _cachedParsedData = null;
   }
 
   Map<String, dynamic>? _data;
+  Map<String, dynamic>? _variables;
   TParsed? _cachedParsedData;
 
   /// Response context. Defaults to an empty `Context()`
@@ -164,6 +179,7 @@ class QueryResult<TParsed extends Object?> {
 
   QueryResult<TParsed> copyWith({
     Map<String, dynamic>? data,
+    Map<String, dynamic>? variables,
     OperationException? exception,
     Context? context,
     QueryResultSource? source,
@@ -171,6 +187,7 @@ class QueryResult<TParsed extends Object?> {
   }) {
     return QueryResult.internal(
       data: data ?? this.data,
+      variables: variables ?? this.variables,
       exception: exception ?? this.exception,
       context: context ?? this.context,
       parserFn: parserFn,
